@@ -11,7 +11,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-const TodoList: React.FC<TodolistPropsType> = ({title, tasks}: TodolistPropsType) => {
+export const TodoList: React.FC<TodolistPropsType> = ({title, tasks}: TodolistPropsType) => {
 
     // const {title, tasks} = props
     return (
@@ -44,5 +44,3 @@ const TodoList: React.FC<TodolistPropsType> = ({title, tasks}: TodolistPropsType
         </div>
     );
 };
-
-export default TodoList;
