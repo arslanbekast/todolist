@@ -18,13 +18,13 @@ function App() {
         {id: 5, title: "Bread", isDone: true},
         {id: 6, title: "Сhocolate", isDone: false},
         {id: 7, title: "Tea", isDone: true},
-        {id: 8, title: "Coffee", isDone: false}
+        {id: 8, title: "Coffee", isDone: true}
     ]
 
     return (
         <div className="App">
-            <TodoList tasks={tasks_1} title={todolistTitle_1}/>
-            <TodoList tasks={tasks_2} title={todolistTitle_2}/>
+            <TodoList initTasks={tasks_1} title={todolistTitle_1}/>
+            <TodoList initTasks={tasks_2} title={todolistTitle_2}/>
         </div>
     );
 }
