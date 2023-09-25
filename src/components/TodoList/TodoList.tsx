@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {Tasks} from "../Tasks/Tasks";
 import {v1} from "uuid";
 
@@ -15,7 +15,7 @@ export type TaskType = {
 
 export type FilterValuesType = "all" | "completed" | "active"
 
-export const TodoList: React.FC<TodolistPropsType> = ({title, initTasks}: TodolistPropsType) => {
+export const TodoList: FC<TodolistPropsType> = ({title, initTasks}: TodolistPropsType) => {
 
     const [filter, setFilter] = useState<FilterValuesType>('all');
     const [tasks, setTasks] = useState<Array<TaskType>>(initTasks);
@@ -29,9 +29,8 @@ export const TodoList: React.FC<TodolistPropsType> = ({title, initTasks}: Todoli
 
     const addTask = (value: string) => {
         if (value.trim()) {
-            let newTask = {id: v1(), title: value.trim(), isDone: false}
+            const newTask = {id: v1(), title: value.trim(), isDone: false}
             setTasks([newTask, ...tasks])
-
         }
     }
 
@@ -39,17 +38,14 @@ export const TodoList: React.FC<TodolistPropsType> = ({title, initTasks}: Todoli
         setNewTaskValue(event.currentTarget.value)
     }
 
-    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            addTask(newTaskValue)
-            setNewTaskValue('');
-        }
-    }
-
-    const onAddTaskClickHandler = () => {
-        addTask(newTaskValue);
+    const onAddedTask = () => {
+        addTask(newTaskValue)
         setNewTaskValue('');
     }
+
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => event.key === 'Enter' && onAddedTask()
+
+    const onAddTaskClickHandler = () => onAddedTask()
 
     const onAllClickHandler = () => changeFilter('all')
 
@@ -60,15 +56,20 @@ export const TodoList: React.FC<TodolistPropsType> = ({title, initTasks}: Todoli
     const getFilteredTasks = (tasks: Array<TaskType>, filter: FilterValuesType): Array<TaskType> => {
         switch (filter) {
             case 'active':
-                return tasks.filter((task) => !task.isDone);
+                return tasks.filter(task => !task.isDone);
             case 'completed':
-                return tasks.filter((task) => task.isDone);
+                return tasks.filter(task => task.isDone);
             default:
                 return tasks
         }
     }
 
     const filteredTasks = getFilteredTasks(tasks, filter);
+
+    const isAddBtnDisabled = !newTaskValue || newTaskValue.length > 15
+    const messageForUser = newTaskValue.length < 15
+                            ? <span>Enter new task</span>
+                            : <span style={{color: "red"}}>Your title is to long</span>
 
     return (
         <div className="todolist">
@@ -79,7 +80,10 @@ export const TodoList: React.FC<TodolistPropsType> = ({title, initTasks}: Todoli
                     value={newTaskValue}
                     onChange={onNewTaskValueChangeHandler}
                     onKeyDown={onKeyDownHandler}/>
-                <button onClick={onAddTaskClickHandler}>+</button>
+                <button onClick={onAddTaskClickHandler} disabled={isAddBtnDisabled}>+</button>
+                <div>
+                    {messageForUser}
+                </div>
             </div>
             <Tasks tasks={filteredTasks} removeTask={removeTask}/>
 
