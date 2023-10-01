@@ -1,38 +1,20 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {Tasks} from "../Tasks/Tasks";
 import {v1} from "uuid";
+import {FilterValuesType, TaskType} from "../../App";
 
 type TodolistPropsType = {
     title: string
-    initTasks: Array<TaskType>
+    tasks: Array<TaskType>
+    changeFilter: (filter: FilterValuesType) => void
+    removeTask: (taskId: string) => void
+    addTask: (value: string) => void
 }
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, removeTask, addTask}) => {
 
-export type FilterValuesType = "all" | "completed" | "active"
 
-export const TodoList: FC<TodolistPropsType> = ({title, initTasks}: TodolistPropsType) => {
-
-    const [filter, setFilter] = useState<FilterValuesType>('all');
-    const [tasks, setTasks] = useState<Array<TaskType>>(initTasks);
     const [newTaskValue, setNewTaskValue] = useState<string>('')
-
-    const changeFilter = (filter: FilterValuesType) => {
-        setFilter(filter);
-    }
-
-    const removeTask = (taskId: string) => setTasks(tasks.filter((task) => task.id !== taskId))
-
-    const addTask = (value: string) => {
-        if (value.trim()) {
-            const newTask = {id: v1(), title: value.trim(), isDone: false}
-            setTasks([newTask, ...tasks])
-        }
-    }
 
     const onNewTaskValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTaskValue(event.currentTarget.value)
@@ -53,18 +35,7 @@ export const TodoList: FC<TodolistPropsType> = ({title, initTasks}: TodolistProp
 
     const onCompletedClickHandler = () => changeFilter('completed')
 
-    const getFilteredTasks = (tasks: Array<TaskType>, filter: FilterValuesType): Array<TaskType> => {
-        switch (filter) {
-            case 'active':
-                return tasks.filter(task => !task.isDone);
-            case 'completed':
-                return tasks.filter(task => task.isDone);
-            default:
-                return tasks
-        }
-    }
 
-    const filteredTasks = getFilteredTasks(tasks, filter);
 
     const isAddBtnDisabled = !newTaskValue || newTaskValue.length > 15
     const messageForUser = newTaskValue.length < 15
@@ -85,7 +56,7 @@ export const TodoList: FC<TodolistPropsType> = ({title, initTasks}: TodolistProp
                     {messageForUser}
                 </div>
             </div>
-            <Tasks tasks={filteredTasks} removeTask={removeTask}/>
+            <Tasks tasks={tasks} removeTask={removeTask}/>
 
             <div>
                 <button onClick={onAllClickHandler}>All</button>

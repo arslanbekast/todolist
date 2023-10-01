@@ -1,5 +1,5 @@
 import React from 'react';
-import {TaskType} from "../TodoList/TodoList";
+import {TaskType} from "../../App";
 
 type TasksPropsType = {
     tasks: Array<TaskType>
