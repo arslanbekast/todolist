@@ -9,25 +9,36 @@ type TodolistPropsType = {
     changeFilter: (filter: FilterValuesType) => void
     removeTask: (taskId: string) => void
     addTask: (value: string) => void
+    changeTaskStatus: (taskId: string, newIsDone: boolean) => void
+    filter: FilterValuesType
 }
 
-export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, removeTask, addTask}) => {
+export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, removeTask, addTask, changeTaskStatus, filter}) => {
 
 
-    const [newTaskValue, setNewTaskValue] = useState<string>('')
+    const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+    const [error, setError] = useState<string | null>(null)
 
     const onNewTaskValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskValue(event.currentTarget.value)
+        setNewTaskTitle(event.currentTarget.value)
     }
 
-    const onAddedTask = () => {
-        addTask(newTaskValue)
-        setNewTaskValue('');
+    const onAddingTask = () => {
+        const taskValue = newTaskTitle.trim()
+        if (taskValue) {
+            addTask(taskValue)
+        } else {
+            setError("Field is required")
+        }
+        setNewTaskTitle('');
     }
 
-    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => event.key === 'Enter' && onAddedTask()
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        setError(null)
+        event.key === 'Enter' && onAddingTask()
+    }
 
-    const onAddTaskClickHandler = () => onAddedTask()
+    const onAddTaskClickHandler = () => onAddingTask()
 
     const onAllClickHandler = () => changeFilter('all')
 
@@ -37,8 +48,8 @@ export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, rem
 
 
 
-    const isAddBtnDisabled = !newTaskValue || newTaskValue.length > 15
-    const messageForUser = newTaskValue.length < 15
+    const isAddBtnDisabled = !newTaskTitle || newTaskTitle.length > 15
+    const messageForUser = error ? <span className='error-message'>{error}</span> : newTaskTitle.length < 15
                             ? <span>Enter new task</span>
                             : <span style={{color: "red"}}>Your title is to long</span>
 
@@ -48,20 +59,34 @@ export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, rem
             <div>
                 <input
                     type={"text"}
-                    value={newTaskValue}
+                    value={newTaskTitle}
                     onChange={onNewTaskValueChangeHandler}
-                    onKeyDown={onKeyDownHandler}/>
+                    onKeyDown={onKeyDownHandler}
+                    className={error ? 'error' : ''}/>
                 <button onClick={onAddTaskClickHandler} disabled={isAddBtnDisabled}>+</button>
+                {error && <div className='error-message'>{error}</div>}
                 <div>
                     {messageForUser}
                 </div>
             </div>
-            <Tasks tasks={tasks} removeTask={removeTask}/>
+            <Tasks tasks={tasks} removeTask={removeTask} changeTaskStatus={changeTaskStatus}/>
 
-            <div>
-                <button onClick={onAllClickHandler}>All</button>
-                <button onClick={onActiveClickHandler}>Active</button>
-                <button onClick={onCompletedClickHandler}>Completed</button>
+            <div className='btnsBox'>
+                <button
+                    className={filter === 'all' ? 'active-filter' : ''}
+                    onClick={onAllClickHandler}>
+                    All
+                </button>
+                <button
+                    className={filter === 'active' ? 'active-filter' : ''}
+                    onClick={onActiveClickHandler}>
+                    Active
+                </button>
+                <button
+                    className={filter === 'completed' ? 'active-filter' : ''}
+                    onClick={onCompletedClickHandler}>
+                    Completed
+                </button>
             </div>
         </div>
     );

@@ -16,3 +16,32 @@
   border-radius: 5px;
   height: max-content;
 }
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: #00505d;
+  border-radius: 3px;
+  border: 2px solid #00505d;
+  color: white;
+}
+
+.is-done {
+  text-decoration: line-through;
+  opacity: .5;
+}
+.task {
+  font-weight: 700;
+}
+
+.btnsBox {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
