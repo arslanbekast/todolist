@@ -4,17 +4,20 @@ import {v1} from "uuid";
 import {FilterValuesType, TaskType} from "../../App";
 
 type TodolistPropsType = {
+    todolistID: string
     title: string
     tasks: Array<TaskType>
-    changeFilter: (filter: FilterValuesType) => void
-    removeTask: (taskId: string) => void
-    addTask: (value: string) => void
-    changeTaskStatus: (taskId: string, newIsDone: boolean) => void
+    changeFilter: (todolistID: string, filter: FilterValuesType) => void
+    removeTask: (todolistID: string, taskId: string) => void
+    addTask: (todolistID: string, value: string) => void
+    changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
     filter: FilterValuesType
+    removeTodolist: (todolistID: string) => void
 }
 
-export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, removeTask, addTask, changeTaskStatus, filter}) => {
+export const TodoList: FC<TodolistPropsType> = (props) => {
 
+    const {todolistID, title, tasks, changeFilter, removeTask, addTask, changeTaskStatus, filter, removeTodolist} = props
 
     const [newTaskTitle, setNewTaskTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -26,7 +29,7 @@ export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, rem
     const onAddingTask = () => {
         const taskValue = newTaskTitle.trim()
         if (taskValue) {
-            addTask(taskValue)
+            addTask(todolistID, taskValue)
         } else {
             setError("Field is required")
         }
@@ -40,22 +43,36 @@ export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, rem
 
     const onAddTaskClickHandler = () => onAddingTask()
 
-    const onAllClickHandler = () => changeFilter('all')
+    const onAllClickHandler = () => changeFilter(todolistID,'all')
 
-    const onActiveClickHandler = () => changeFilter('active')
+    const onActiveClickHandler = () => changeFilter(todolistID, 'active')
 
-    const onCompletedClickHandler = () => changeFilter('completed')
+    const onCompletedClickHandler = () => changeFilter(todolistID, 'completed')
 
+    const getFilteredTasks = (tasks: Array<TaskType>, filter: FilterValuesType): Array<TaskType> => {
+        switch (filter) {
+            case 'active':
+                return tasks.filter(task => !task.isDone);
+            case 'completed':
+                return tasks.filter(task => task.isDone);
+            default:
+                return tasks
+        }
+    }
 
+    const filteredTasks = getFilteredTasks(tasks, filter);
+
+    const removeTodolistHandler = () => removeTodolist(todolistID)
 
     const isAddBtnDisabled = !newTaskTitle || newTaskTitle.length > 15
-    const messageForUser = error ? <span className='error-message'>{error}</span> : newTaskTitle.length < 15
+    const messageForUser = newTaskTitle.length < 15
                             ? <span>Enter new task</span>
                             : <span style={{color: "red"}}>Your title is to long</span>
 
     return (
         <div className="todolist">
             <h3>{title}</h3>
+            <button onClick={removeTodolistHandler}>X</button>
             <div>
                 <input
                     type={"text"}
@@ -69,7 +86,11 @@ export const TodoList: FC<TodolistPropsType> = ({title, tasks, changeFilter, rem
                     {messageForUser}
                 </div>
             </div>
-            <Tasks tasks={tasks} removeTask={removeTask} changeTaskStatus={changeTaskStatus}/>
+
+            <Tasks todolistID={todolistID}
+                   tasks={filteredTasks}
+                   removeTask={removeTask}
+                   changeTaskStatus={changeTaskStatus}/>
 
             <div className='btnsBox'>
                 <button

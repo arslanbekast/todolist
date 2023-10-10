@@ -2,19 +2,20 @@ import React, {ChangeEvent} from 'react';
 import {TaskType} from "../../App";
 
 type TasksPropsType = {
+    todolistID: string
     tasks: Array<TaskType>
-    removeTask: (taskId: string) => void
-    changeTaskStatus: (taskId: string, newIsDone: boolean) => void
+    removeTask: (todolistID: string, taskId: string) => void
+    changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
 }
 
-export const Tasks = ({tasks, removeTask, changeTaskStatus}: TasksPropsType) => {
+export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus}: TasksPropsType) => {
 
     let taskList: JSX.Element;
     let listItems: Array<JSX.Element>;
 
     listItems = tasks.map(task => {
-        const onClickHandler = () => removeTask(task.id)
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(task.id, e.currentTarget.checked)
+        const onClickHandler = () => removeTask(todolistID, task.id)
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(todolistID, task.id, e.currentTarget.checked)
 
         return (
             <li key={task.id}>
