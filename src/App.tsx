@@ -3,6 +3,8 @@ import './App.css';
 import {TodoList} from "./components/TodoList/TodoList";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {ButtonAppBar} from "./components/ButtonAppBar/ButtonAppBar";
+import {Container, Grid, Paper} from "@mui/material";
 
 export type TaskType = {
     id: string
@@ -91,27 +93,37 @@ function App() {
 
     return (
         <div className="App">
-            <AddItemForm onClick={addTodolist} />
-            {
-                todolists.map(tl => {
+            <ButtonAppBar/>
+            <Container fixed>
 
-                    return (
-                        <TodoList
-                            key={tl.id}
-                            todolistID={tl.id}
-                            tasks={tasks[tl.id]}
-                            title={tl.title}
-                            changeFilter={changeFilter}
-                            removeTask={removeTask}
-                            addTask={addTask}
-                            changeTaskStatus={changeTaskStatus}
-                            filter={tl.filter}
-                            removeTodolist={removeTodolist}
-                            updateTask={updateTask}
-                            updateTodoTitle={updateTodoTitle}/>
-                    )
-                })
-            }
+                <Grid container style={{margin:"20px"}}>
+                    <AddItemForm addItem={addTodolist}/>
+                </Grid>
+                <Grid container  >
+                {
+                    todolists.map(tl => {
+
+                        return (
+                            <Paper elevation={3} style={{padding:'20px',margin:"10px"}}>
+                            <TodoList
+                                key={tl.id}
+                                todolistID={tl.id}
+                                tasks={tasks[tl.id]}
+                                title={tl.title}
+                                changeFilter={changeFilter}
+                                removeTask={removeTask}
+                                addTask={addTask}
+                                changeTaskStatus={changeTaskStatus}
+                                filter={tl.filter}
+                                removeTodolist={removeTodolist}
+                                updateTask={updateTask}
+                                updateTodoTitle={updateTodoTitle}/>
+                            </Paper>
+                        )
+                    })
+                }
+                </Grid>
+            </Container>
 
         </div>
     );

@@ -1,10 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, TextField} from "@mui/material";
 
 type PropsType = {
-    onClick: (newTitle: string) => void
+    addItem: (newTitle: string) => void
 }
 
-export const AddItemForm = ({onClick}: PropsType) => {
+export const AddItemForm = (props: PropsType) => {
 
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -16,7 +17,7 @@ export const AddItemForm = ({onClick}: PropsType) => {
     const addItem = () => {
         const newTitle = title.trim()
         if (newTitle) {
-            onClick(newTitle)
+            props.addItem(newTitle)
         } else {
             setError("Field is required")
         }
@@ -35,17 +36,29 @@ export const AddItemForm = ({onClick}: PropsType) => {
         ? <span style={{color: "red"}}>Your title is to long</span>
         : ''
 
+    const stylesButton = {
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+    }
     return (
         <div>
-            <input
-                type={"text"}
+            <TextField
+                error={!!error}
+                size={'small'}
+                id="outlined-basic"
+                label={error ? error : "type smth..."}
+                variant="outlined"
                 value={title}
-                placeholder='Enter title'
                 onChange={onTitleChangeHandler}
                 onKeyDown={onKeyDownHandler}
-                className={error ? 'error' : ''}/>
-            <button onClick={onAddTaskClickHandler} disabled={isAddBtnDisabled}>+</button>
-            {error && <div className='error-message'>{error}</div>}
+                className={error ? "error" : ""}
+            />
+
+
+            <Button onClick={addItem} variant="contained" style={stylesButton}>+</Button>
+            {/*{error && <div className='error-message'>{error}</div>}*/}
             <div>
                 {messageForUser}
             </div>

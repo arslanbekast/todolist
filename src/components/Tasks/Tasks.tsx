@@ -1,6 +1,8 @@
 import React, {ChangeEvent} from 'react';
 import {TaskType} from "../../App";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {Checkbox, IconButton} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TasksPropsType = {
     todolistID: string
@@ -27,16 +29,15 @@ export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, updateTa
         }
         return (
             <li className={task.isDone ? 'is-done' : 'task'} key={task.id}>
-                <input type="checkbox"
-                       checked={task.isDone}
-                       onChange={onChangeHandler}/>
-                {/*<span  className={task.isDone ? 'is-done' : 'task'}>{task.title}</span>*/}
+                <Checkbox onChange={onChangeHandler} checked={task.isDone}/>
                 <EditableSpan title={task.title} onClick={updateTaskHandler}/>
-                <button onClick={onClickHandler}>x</button>
+                <IconButton aria-label="delete" onClick={onClickHandler}>
+                    <DeleteIcon/>
+                </IconButton>
             </li>
         )})
 
-    taskList = tasks.length ? <ul>{listItems}</ul> : <span>Your tasks list is empty</span>;
+    taskList = tasks.length ? <ul style={{listStyle: 'none', padding: 0}}>{listItems}</ul> : <span>Your tasks list is empty</span>;
 
     return (
         <>
