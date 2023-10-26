@@ -71,7 +71,7 @@ export const TodoList: FC<TodolistPropsType> = (props) => {
                    changeTaskStatus={changeTaskStatus}
                    updateTask={updateTask}/>
 
-            <div className='btnsBox'>
+            <div className='btnsBox' style={tasks.length ? {} : {display: 'none'}}>
                 <Button variant={props.filter === 'all' ? "contained" : "text"} color="success"
                         onClick={onAllClickHandler}>All</Button>
                 <Button variant={props.filter === 'active' ? "contained" : "text"} color="primary"
