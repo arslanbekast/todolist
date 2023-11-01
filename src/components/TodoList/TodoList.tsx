@@ -23,13 +23,25 @@ type TodolistPropsType = {
 
 export const TodoList: FC<TodolistPropsType> = (props) => {
 
-    const {todolistID, title, tasks, changeFilter, removeTask, addTask, changeTaskStatus, filter, removeTodolist, updateTask, updateTodoTitle} = props
+    const {
+        todolistID,
+        title,
+        tasks,
+        changeFilter,
+        removeTask,
+        addTask,
+        changeTaskStatus,
+        filter,
+        removeTodolist,
+        updateTask,
+        updateTodoTitle
+    } = props
 
     const addTaskHandler = (newTitle: string) => {
         addTask(todolistID, newTitle)
     }
 
-    const onAllClickHandler = () => changeFilter(todolistID,'all')
+    const onAllClickHandler = () => changeFilter(todolistID, 'all')
 
     const onActiveClickHandler = () => changeFilter(todolistID, 'active')
 
@@ -63,7 +75,7 @@ export const TodoList: FC<TodolistPropsType> = (props) => {
                 </IconButton>
             </h3>
 
-            <AddItemForm addItem={addTaskHandler} />
+            <AddItemForm addItem={addTaskHandler}/>
 
             <Tasks todolistID={todolistID}
                    tasks={filteredTasks}
