@@ -1,7 +1,7 @@
 import {FilterValuesType, TodolistType} from "../App";
 import {v1} from "uuid";
 
-export const todolistsReducer = (state: TodolistType[], action: todolistsReducerType): TodolistType[] => {
+export const todolistsReducer = (state: TodolistType[], action: TodolistsActionsType): TodolistType[] => {
     switch (action.type) {
         case "REMOVE-TODOLIST": {
             return state.filter(el => el.id !== action.payload.id)
@@ -21,8 +21,11 @@ export const todolistsReducer = (state: TodolistType[], action: todolistsReducer
     }
 }
 
-type todolistsReducerType = removeTodolistACType | addTodolistACType | changeTodolistTitleACType | changeFilterACType
-export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
+type TodolistsActionsType = RemoveTodolistActionType
+    | AddTodolistActionType
+    | ChangeTodolistTitleActionType
+    | ChangeFilterActionType
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 export const removeTodolistAC = (id: string) => {
     return {
         type: 'REMOVE-TODOLIST',
@@ -30,7 +33,7 @@ export const removeTodolistAC = (id: string) => {
     } as const
 }
 
-export type addTodolistACType = ReturnType<typeof addTodolistAC>
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export const addTodolistAC = (title: string) => {
     return {
         type: 'ADD-TODOLIST',
@@ -38,7 +41,7 @@ export const addTodolistAC = (title: string) => {
     } as const
 }
 
-type changeTodolistTitleACType=ReturnType<typeof changeTodolistTitleAC>
+type ChangeTodolistTitleActionType =ReturnType<typeof changeTodolistTitleAC>
 export const changeTodolistTitleAC=(id: string, title: string)=>{
     return {
         type: 'CHANGE-TODOLIST-TITLE',
@@ -46,7 +49,7 @@ export const changeTodolistTitleAC=(id: string, title: string)=>{
     } as const
 }
 
-type changeFilterACType=ReturnType<typeof changeFilterAC>
+type ChangeFilterActionType =ReturnType<typeof changeFilterAC>
 export const changeFilterAC=(filter: FilterValuesType, id: string)=>{
     return {
         type: 'CHANGE-TODOLIST-FILTER',
