@@ -77,15 +77,15 @@ function AppWithRedux() {
             <ButtonAppBar/>
             <Container fixed>
 
-                <Grid container style={{margin:"20px"}}>
+                <Grid container style={{margin:"20px 0"}}>
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
-                <Grid container  >
+                <Grid container  style={{gap: "20px"}}>
                 {
                     todolists.map(tl => {
 
                         return (
-                            <Paper key={tl.id} elevation={3} style={{padding:'20px',margin:"10px"}}>
+                            <Paper key={tl.id} elevation={3} style={{padding:'20px'}}>
                             <TodoList
                                 todolistID={tl.id}
                                 tasks={tasks[tl.id]}
