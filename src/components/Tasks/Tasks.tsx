@@ -1,8 +1,10 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {TaskType} from "../../App";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Task} from "./Task";
+import {TaskWithRedux} from "./TaskWithRedux";
 
 type TasksPropsType = {
     todolistID: string
@@ -21,20 +23,34 @@ export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, updateTa
     //     updateTask(todolistID, task.id, newTitle)
     // }
 
+    const onClickHandler = useCallback( (taskId: string) => {
+        removeTask(todolistID, taskId)
+    }, [todolistID, removeTask])
+
+    const onChangeHandler = useCallback( (taskId: string, newIsDone: boolean) => {
+        changeTaskStatus(todolistID, taskId, newIsDone)
+    }, [todolistID, changeTaskStatus])
+
+    const updateTaskHandler = useCallback( (taskId: string, newTitle: string) => {
+        updateTask(todolistID, taskId, newTitle)
+    }, [todolistID, updateTask])
+
     listItems = tasks.map(task => {
-        const onClickHandler = () => removeTask(todolistID, task.id)
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(todolistID, task.id, e.currentTarget.checked)
-        const updateTaskHandler = (newTitle: string) => {
-            updateTask(todolistID, task.id, newTitle)
-        }
+
         return (
-            <li className={task.isDone ? 'is-done' : 'task'} key={task.id}>
-                <Checkbox onChange={onChangeHandler} checked={task.isDone}/>
-                <EditableSpan title={task.title} onClick={updateTaskHandler}/>
-                <IconButton aria-label="delete" onClick={onClickHandler}>
-                    <DeleteIcon/>
-                </IconButton>
-            </li>
+            // <li className={task.isDone ? 'is-done' : 'task'} key={task.id}>
+            //     <Checkbox onChange={onChangeHandler} checked={task.isDone}/>
+            //     <EditableSpan title={task.title} onClick={updateTaskHandler}/>
+            //     <IconButton aria-label="delete" onClick={onClickHandler}>
+            //         <DeleteIcon/>
+            //     </IconButton>
+            // </li>
+            // <Task key={task.id}
+            //       task={task}
+            //       removeTask={onClickHandler}
+            //       changeTaskStatus={onChangeHandler}
+            //       updateTask={updateTaskHandler} />
+            <TaskWithRedux key={task.id} task={task} todolistId={todolistID}/>
         )})
 
     taskList = tasks.length ? <ul style={{listStyle: 'none', padding: 0}}>{listItems}</ul> : <span>Your tasks list is empty</span>;
