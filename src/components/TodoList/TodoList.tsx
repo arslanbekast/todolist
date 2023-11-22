@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, memo, useCallback, useMemo, useState} from 'react';
 import {Tasks} from "../Tasks/Tasks";
 import {v1} from "uuid";
 import {FilterValuesType, TaskType} from "../../App";
@@ -6,6 +6,7 @@ import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {Button, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {MyButton} from "../MyButton/MyButton";
 
 type TodolistPropsType = {
     todolistID: string
@@ -21,7 +22,7 @@ type TodolistPropsType = {
     updateTodoTitle: (todolistID: string, newTitle: string) => void
 }
 
-export const TodoList: FC<TodolistPropsType> = (props) => {
+export const TodoList: FC<TodolistPropsType> = memo( (props) => {
 
     const {
         todolistID,
@@ -37,14 +38,12 @@ export const TodoList: FC<TodolistPropsType> = (props) => {
         updateTodoTitle
     } = props
 
-    const addTaskHandler = (newTitle: string) => {
+    const addTaskHandler = useCallback( (newTitle: string) => {
         addTask(todolistID, newTitle)
-    }
+    }, [addTask, todolistID] )
 
     const onAllClickHandler = () => changeFilter(todolistID, 'all')
-
     const onActiveClickHandler = () => changeFilter(todolistID, 'active')
-
     const onCompletedClickHandler = () => changeFilter(todolistID, 'completed')
 
     const getFilteredTasks = (tasks: Array<TaskType>, filter: FilterValuesType): Array<TaskType> => {
@@ -58,13 +57,13 @@ export const TodoList: FC<TodolistPropsType> = (props) => {
         }
     }
 
-    const filteredTasks = getFilteredTasks(tasks, filter);
+    const filteredTasks = useMemo(() => getFilteredTasks(tasks, filter), [filter, tasks]);
 
     const removeTodolistHandler = () => removeTodolist(todolistID)
 
-    const updateTodoTitleHandler = (newTitle: string) => {
+    const updateTodoTitleHandler = useCallback( (newTitle: string) => {
         updateTodoTitle(todolistID, newTitle)
-    }
+    }, [updateTodoTitle, todolistID])
 
     return (
         <div>
@@ -84,13 +83,13 @@ export const TodoList: FC<TodolistPropsType> = (props) => {
                    updateTask={updateTask}/>
 
             <div className='btnsBox' style={tasks.length ? {} : {display: 'none'}}>
-                <Button variant={props.filter === 'all' ? "contained" : "text"} color="success"
-                        onClick={onAllClickHandler}>All</Button>
-                <Button variant={props.filter === 'active' ? "contained" : "text"} color="primary"
-                        onClick={onActiveClickHandler}>Active</Button>
-                <Button variant={props.filter === 'completed' ? "contained" : "text"} color="secondary"
-                        onClick={onCompletedClickHandler}>Completed</Button>
+                <MyButton variant={filter === 'all' ? "contained" : "text"} color="success"
+                        onClick={onAllClickHandler}>All</MyButton>
+                <MyButton variant={filter === 'active' ? "contained" : "text"} color="primary"
+                        onClick={onActiveClickHandler}>Active</MyButton>
+                <MyButton variant={filter === 'completed' ? "contained" : "text"} color="secondary"
+                        onClick={onCompletedClickHandler}>Completed</MyButton>
             </div>
         </div>
     );
-};
+} )
