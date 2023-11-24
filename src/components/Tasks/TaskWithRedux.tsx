@@ -28,6 +28,7 @@ export const TaskWithRedux: FC<TaskWithReduxPropsType> = memo(({task, todolistId
 
 
     return (
+
         <li className={task.isDone ? 'is-done' : 'task'}>
             <Checkbox onChange={changeTaskStatus} checked={task.isDone}/>
             <EditableSpan title={task.title} onClick={changeTaskTitle}/>
