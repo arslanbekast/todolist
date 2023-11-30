@@ -1,11 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, TextField} from "@mui/material";
 
-type PropsType = {
+export type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
 }
 
-export const AddItemForm = React.memo( (props: PropsType) => {
+export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
     // console.log('AddItemForm')
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -29,9 +29,10 @@ export const AddItemForm = React.memo( (props: PropsType) => {
         event.key === 'Enter' && addItem()
     }
 
-    const onAddTaskClickHandler = () => addItem()
+    // const onAddTaskClickHandler = () => addItem()
+    //
+    // const isAddBtnDisabled = !title || title.length > 15
 
-    const isAddBtnDisabled = !title || title.length > 15
     const messageForUser = title.length > 15
         ? <span style={{color: "red"}}>Your title is to long</span>
         : ''
