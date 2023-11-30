@@ -2,8 +2,8 @@ import React, {FC, memo, ReactNode} from 'react';
 import {Button, ButtonProps} from "@mui/material";
 
 type MyButtonPropsType = {
-    variant: any
-    color: any
+    variant: 'text' | 'outlined' | 'contained'
+    color: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
     onClick: () => void
     children: ReactNode
 }
