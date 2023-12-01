@@ -15,14 +15,14 @@ export const Task: FC<TaskPropsType> = memo(({task, removeTask, changeTaskStatus
 
     const onClickHandler = () => removeTask(task.id)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(task.id, e.currentTarget.checked)
-    const updateTaskHandler = (newTitle: string) => {
+    const changeTaskTitleHandler = (newTitle: string) => {
         changeTaskTitle(task.id, newTitle)
     }
 
     return (
         <li className={task.isDone ? 'is-done' : 'task'}>
             <Checkbox onChange={onChangeHandler} checked={task.isDone}/>
-            <EditableSpan title={task.title} onClick={updateTaskHandler}/>
+            <EditableSpan title={task.title} onClick={changeTaskTitleHandler}/>
             <IconButton aria-label="delete" onClick={onClickHandler}>
                 <DeleteIcon/>
             </IconButton>
