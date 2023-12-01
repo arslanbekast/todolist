@@ -119,7 +119,7 @@ function AppWithReducer() {
                                 changeTaskStatus={changeTaskStatus}
                                 filter={tl.filter}
                                 removeTodolist={removeTodolist}
-                                updateTask={updateTask}
+                                changeTaskTitle={updateTask}
                                 updateTodoTitle={updateTodoTitle}/>
                             </Paper>
                         )

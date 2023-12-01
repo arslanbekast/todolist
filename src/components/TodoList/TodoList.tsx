@@ -18,7 +18,7 @@ type TodolistPropsType = {
     changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
     filter: FilterValuesType
     removeTodolist: (todolistID: string) => void
-    updateTask: (todolistID: string, taskID: string, newTitle: string) => void
+    changeTaskTitle: (todolistID: string, taskID: string, newTitle: string) => void
     updateTodoTitle: (todolistID: string, newTitle: string) => void
 }
 
@@ -34,7 +34,7 @@ export const TodoList: FC<TodolistPropsType> = memo( (props) => {
         changeTaskStatus,
         filter,
         removeTodolist,
-        updateTask,
+        changeTaskTitle,
         updateTodoTitle
     } = props
 
@@ -80,7 +80,7 @@ export const TodoList: FC<TodolistPropsType> = memo( (props) => {
                    tasks={filteredTasks}
                    removeTask={removeTask}
                    changeTaskStatus={changeTaskStatus}
-                   updateTask={updateTask}/>
+                   changeTaskTitle={changeTaskTitle}/>
 
             <div className='btnsBox' style={tasks.length ? {} : {display: 'none'}}>
                 <MyButton variant={filter === 'all' ? "contained" : "text"} color="success"

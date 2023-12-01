@@ -11,10 +11,10 @@ type TasksPropsType = {
     tasks: Array<TaskType>
     removeTask: (todolistID: string, taskId: string) => void
     changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
-    updateTask: (todolistID: string, taskID: string, newTitle: string) => void
+    changeTaskTitle: (todolistID: string, taskID: string, newTitle: string) => void
 }
 
-export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, updateTask}: TasksPropsType) => {
+export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, changeTaskTitle}: TasksPropsType) => {
 
     let taskList: JSX.Element;
     let listItems: Array<JSX.Element>;
@@ -31,9 +31,9 @@ export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, updateTa
         changeTaskStatus(todolistID, taskId, newIsDone)
     }, [todolistID, changeTaskStatus])
 
-    const updateTaskHandler = useCallback( (taskId: string, newTitle: string) => {
-        updateTask(todolistID, taskId, newTitle)
-    }, [todolistID, updateTask])
+    const changeTaskTitleHandler = useCallback( (taskId: string, newTitle: string) => {
+        changeTaskTitle(todolistID, taskId, newTitle)
+    }, [todolistID, changeTaskTitle])
 
     listItems = tasks.map(task => {
 
@@ -45,12 +45,12 @@ export const Tasks = ({todolistID, tasks, removeTask, changeTaskStatus, updateTa
             //         <DeleteIcon/>
             //     </IconButton>
             // </li>
-            // <Task key={task.id}
-            //       task={task}
-            //       removeTask={onClickHandler}
-            //       changeTaskStatus={onChangeHandler}
-            //       updateTask={updateTaskHandler} />
-            <TaskWithRedux key={task.id} task={task} todolistId={todolistID}/>
+            <Task key={task.id}
+                  task={task}
+                  removeTask={onClickHandler}
+                  changeTaskStatus={onChangeHandler}
+                  changeTaskTitle={changeTaskTitleHandler} />
+            // <TaskWithRedux key={task.id} task={task} todolistId={todolistID}/>
         )})
 
     taskList = tasks.length ? <ul style={{listStyle: 'none', padding: 0}}>{listItems}</ul> : <span>Your tasks list is empty</span>;

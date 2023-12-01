@@ -8,15 +8,15 @@ type TaskPropsType = {
     task: TaskType
     removeTask: (taskId: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean) => void
-    updateTask: (taskID: string, newTitle: string) => void
+    changeTaskTitle: (taskID: string, newTitle: string) => void
 }
 
-export const Task: FC<TaskPropsType> = memo(({task, removeTask, changeTaskStatus, updateTask}) => {
+export const Task: FC<TaskPropsType> = memo(({task, removeTask, changeTaskStatus, changeTaskTitle}) => {
 
     const onClickHandler = () => removeTask(task.id)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(task.id, e.currentTarget.checked)
     const updateTaskHandler = (newTitle: string) => {
-        updateTask(task.id, newTitle)
+        changeTaskTitle(task.id, newTitle)
     }
 
     return (
