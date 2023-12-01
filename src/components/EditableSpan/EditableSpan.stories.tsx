@@ -1,7 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {action} from '@storybook/addon-actions'
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button, TextField} from "@mui/material";
+import React from "react";
 import {EditableSpan} from "./EditableSpan";
 
 // More on how to set up stories at:
