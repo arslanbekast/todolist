@@ -148,6 +148,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
                     const action = updateTaskAC(taskId, domainModel, todolistId)
                     dispatch(action)
                     dispatch(setStatusAC('succeeded'))
+                    dispatch(changeTaskEntityStatusAC(todolistId, taskId, 'idle'))
                 } else {
                     handleServerAppError<{item: TaskType}>(dispatch, res.data)
                 }
