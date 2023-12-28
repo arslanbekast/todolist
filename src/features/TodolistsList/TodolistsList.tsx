@@ -16,6 +16,8 @@ import {Todolist} from './Todolist/Todolist'
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import {selectIsLoggedin} from "../auth/Login/auth-selectors";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsList: React.FC = () => {
 
@@ -23,10 +25,13 @@ export const TodolistsList: React.FC = () => {
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
 
     const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(selectIsLoggedin)
 
     useEffect(() => {
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
+        if (isLoggedIn) {
+            const thunk = fetchTodolistsTC()
+            dispatch(thunk)
+        }
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
@@ -69,6 +74,9 @@ export const TodolistsList: React.FC = () => {
         dispatch(thunk)
     }, [])
 
+    if (!isLoggedIn) {
+        return <Navigate to="/login" />
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>

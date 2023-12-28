@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import {RequestStatusType} from "../app/app-reducer";
 
-const instance = axios.create({
+export const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {

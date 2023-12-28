@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import { TodolistsList } from '../features/TodolistsList/TodolistsList'
 
@@ -13,14 +13,39 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { Menu } from '@mui/icons-material';
 import LinearProgress from "@mui/material/LinearProgress";
-import {useAppSelector} from "./store";
-import {RequestStatusType} from "./app-reducer";
+import {useAppDispatch, useAppSelector} from "./store";
+import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {createBrowserRouter, Navigate, Route, RouterProvider, Routes} from "react-router-dom";
+import {Login} from "../features/auth/Login/Login";
+import CircularProgress from "@mui/material/CircularProgress";
+import {selectIsLoggedin} from "../features/auth/Login/auth-selectors";
+import {logoutTC} from "../features/auth/Login/auth-reducer";
 
 
 function App() {
 
     const status  = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const isLoggedIn = useAppSelector(selectIsLoggedin)
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [])
+
+    if (!isInitialized) {
+        const circularProgressStyle = {display: "flex", justifyContent: "center", alignItems: "center", height: "100vh"}
+        return <div
+            style={circularProgressStyle}>
+            <CircularProgress/>
+        </div>
+    }
+
+    const handleLogoutButtonClick = () => {
+        dispatch(logoutTC())
+    }
 
     return (
         <div className="App">
@@ -33,15 +58,46 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+
+                    {
+                        isLoggedIn
+                            ? <Button color="inherit" onClick={handleLogoutButtonClick}>Logout</Button>
+                            : <Button color="inherit">Login</Button>
+                    }
+
                 </Toolbar>
                 {status === 'loading' && <LinearProgress color='secondary'/>}
             </AppBar>
             <Container fixed>
-                <TodolistsList/>
+                <RouterProvider router={router} />
+                {/*<Routes>*/}
+                {/*    <Route path="/" element={<TodolistsList />} />*/}
+                {/*    <Route path="/Login" element={<Login />} />*/}
+                {/*    <Route path="/404" element={<h4>404: PAGE NOT FOUND</h4>} />*/}
+                {/*    <Route path="*" element={<Navigate to={"/404"} />} />*/}
+                {/*</Routes>*/}
             </Container>
         </div>
     )
 }
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <TodolistsList />
+    },
+    {
+        path: 'login',
+        element: <Login />
+    },
+    {
+        path: '/404',
+        element: <h4>404: PAGE NOT FOUND</h4>
+    },
+    {
+        path: '*',
+        element: <Navigate to={"/404"} />
+    }
+])
 
 export default App
