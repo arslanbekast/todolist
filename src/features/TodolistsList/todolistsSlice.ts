@@ -3,6 +3,7 @@ import { appActions, RequestStatusType } from "app/appSlice"
 import { handleServerNetworkError } from "utils/error-utils"
 import { AppThunk } from "app/store"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { clearTodolistsAndTasks } from "common/actions/common.actions"
 
 const slice = createSlice({
     name: "todolists",
@@ -56,6 +57,14 @@ const slice = createSlice({
             //   state.push({ ...tl, filter: "all", entityStatus: "idle" })
             // })
         },
+        // clearTodolists: () => {
+        //     return []
+        // },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(clearTodolistsAndTasks.type, () => {
+            return []
+        })
     },
 })
 
