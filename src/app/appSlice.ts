@@ -1,41 +1,60 @@
-import { authAPI } from "api/todolists-api"
-import { authActions } from "features/Login/authSlice"
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AppThunk } from "app/store"
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction, UnknownAction } from "@reduxjs/toolkit";
+import { todolistsThunks } from "features/TodolistsList/model/todolists/todolists.reducer";
+import { tasksThunks } from "features/TodolistsList/model/tasks/tasksSlice";
+import { authThunks } from "features/auth/model/auth.slice";
 
-export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
+const initialState = {
+  status: "idle" as RequestStatusType,
+  error: null as string | null,
+  isInitialized: false,
+};
+
+export type AppInitialStateType = typeof initialState;
+export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 const slice = createSlice({
   name: "app",
-  initialState: {
-    status: "idle" as RequestStatusType,
-    error: null as string | null,
-    isInitialized: false,
-  },
+  initialState,
   reducers: {
     setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
-      state.error = action.payload.error
+      state.error = action.payload.error;
     },
     setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
-      state.status = action.payload.status
+      state.status = action.payload.status;
     },
     setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
-      state.isInitialized = action.payload.isInitialized
+      state.isInitialized = action.payload.isInitialized;
     },
   },
-})
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isPending, (state) => {
+        state.status = "loading";
+      })
+      .addMatcher(isRejected, (state, action: any) => {
+        debugger;
+        state.status = "failed";
+        if (action.payload) {
+          if (
+            action.type === todolistsThunks.addTodolist.rejected.type ||
+            action.type === tasksThunks.addTask.rejected.type ||
+            action.type === authThunks.initializeApp.rejected.type
+          ) {
+            return;
+          }
+          state.error = action.payload.messages[0];
+        } else {
+          state.error = action.error.message ? action.error.message : "Some error occurred";
+        }
+      })
+      .addMatcher(isFulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addDefaultCase((state, action) => {
+        console.log("⌚ addDefaultCase", action.type);
+      });
+  },
+});
 
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-  authAPI.me().then((res) => {
-    if (res.data.resultCode === 0) {
-      dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
-    } else {
-    }
-
-    dispatch(appActions.setAppInitialized({ isInitialized: true }))
-  })
-}
-
-export const appReducer = slice.reducer
-export const appActions = slice.actions
-export type AppState = ReturnType<typeof slice.getInitialState>
+export const appReducer = slice.reducer;
+export const appActions = slice.actions;
