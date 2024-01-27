@@ -1,4 +1,4 @@
-import { createSlice, UnknownAction } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import { appActions } from "app/appSlice"
 import { todolistsThunks } from "features/TodolistsList/model/todolists/todolistsSlice"
 

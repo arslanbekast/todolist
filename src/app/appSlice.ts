@@ -1,4 +1,4 @@
-import { createSlice, isFulfilled, isPending, isRejected, PayloadAction, UnknownAction } from "@reduxjs/toolkit"
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit"
 import { todolistsThunks } from "features/TodolistsList/model/todolists/todolistsSlice"
 import { tasksThunks } from "features/TodolistsList/model/tasks/tasksSlice"
 import { authThunks } from "features/auth/model/authSlice"
