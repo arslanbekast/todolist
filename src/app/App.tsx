@@ -1,14 +1,13 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { CircularProgress, Container } from "@mui/material"
-import { Login } from "features/auth/ui/login/login"
-import { TodolistsList } from "features/TodolistsList/ui/TodolistsList"
+import { BrowserRouter } from "react-router-dom"
+import { CircularProgress } from "@mui/material"
 import { ErrorSnackbar } from "common/components"
 import { useActions } from "common/hooks"
 import { selectIsInitialized } from "app/app.selectors"
 import { authThunks } from "features/auth/model/authSlice"
 import { Header } from "app/Header/Header"
+import { Routing } from "app/Routing/Routing"
 
 function App() {
     const isInitialized = useSelector(selectIsInitialized)
@@ -32,12 +31,7 @@ function App() {
             <div className="App">
                 <ErrorSnackbar />
                 <Header />
-                <Container fixed>
-                    <Routes>
-                        <Route path={"/"} element={<TodolistsList />} />
-                        <Route path={"/login"} element={<Login />} />
-                    </Routes>
-                </Container>
+                <Routing />
             </div>
         </BrowserRouter>
     )
