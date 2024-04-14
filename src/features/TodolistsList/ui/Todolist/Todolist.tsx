@@ -29,7 +29,7 @@ export const Todolist = React.memo(function ({ todolist, tasks }: Props) {
             <TodolistTitle todolist={todolist} />
             <AddItemForm addItem={addTaskCb} disabled={todolist.entityStatus === "loading"} />
             <Tasks tasks={tasks} todolist={todolist} />
-            <FilterTasksButtons todolist={todolist} />
+            {tasks.length > 0 && <FilterTasksButtons todolist={todolist} />}
         </div>
     )
 })
