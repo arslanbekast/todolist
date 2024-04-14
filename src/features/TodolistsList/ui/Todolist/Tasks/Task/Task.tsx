@@ -36,6 +36,7 @@ export const Task = memo(({ task, todolistId }: Props) => {
                 checked={task.status === TaskStatuses.Completed}
                 color="primary"
                 onChange={changeTaskStatusHandler}
+                size={"small"}
             />
 
             <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
