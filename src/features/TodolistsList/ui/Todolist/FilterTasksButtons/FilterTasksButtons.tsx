@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import { Button, ButtonGroup } from "@mui/material"
 import React from "react"
 import { useActions } from "common/hooks"
 import {
@@ -21,28 +21,31 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
     }
 
     return (
-        <div style={{ paddingTop: "10px" }}>
+        <ButtonGroup size="small" style={{ paddingTop: "10px" }}>
             <Button
-                variant={filter === "all" ? "outlined" : "text"}
+                variant={filter === "all" ? "contained" : "outlined"}
                 onClick={() => changeFilterHandler("all")}
-                color={"inherit"}
+                color={"primary"}
+                size={"small"}
             >
                 All
             </Button>
             <Button
-                variant={filter === "active" ? "outlined" : "text"}
+                variant={filter === "active" ? "contained" : "outlined"}
                 onClick={() => changeFilterHandler("active")}
                 color={"primary"}
+                size={"small"}
             >
                 Active
             </Button>
             <Button
-                variant={filter === "completed" ? "outlined" : "text"}
+                variant={filter === "completed" ? "contained" : "outlined"}
                 onClick={() => changeFilterHandler("completed")}
-                color={"secondary"}
+                color={"primary"}
+                size={"small"}
             >
                 Completed
             </Button>
-        </div>
+        </ButtonGroup>
     )
 }
