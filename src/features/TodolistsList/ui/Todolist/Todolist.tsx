@@ -25,10 +25,11 @@ export const Todolist = React.memo(function ({ todolist, tasks }: Props) {
     }
 
     return (
-        <div>
+        <div style={{ overflow: "hidden" }}>
             <TodolistTitle todolist={todolist} />
             <AddItemForm addItem={addTaskCb} disabled={todolist.entityStatus === "loading"} />
             <Tasks tasks={tasks} todolist={todolist} />
+            {!tasks.length && <div style={{ paddingTop: "10px", color: "grey" }}>No task</div>}
             {tasks.length > 0 && <FilterTasksButtons todolist={todolist} />}
         </div>
     )
