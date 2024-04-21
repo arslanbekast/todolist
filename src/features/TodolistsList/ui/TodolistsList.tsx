@@ -37,13 +37,13 @@ export const TodolistsList = () => {
             <Grid container style={{ padding: "20px 0" }}>
                 <AddItemForm addItem={addTodolist} />
             </Grid>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} style={{ flexWrap: "nowrap", overflowX: "auto", paddingBottom: "24px" }}>
                 {todolists.map((tl) => {
                     let allTodolistTasks = tasks[tl.id]
 
                     return (
                         <Grid item key={tl.id}>
-                            <Paper style={{ padding: "10px", paddingBottom: "20px" }}>
+                            <Paper style={{ padding: "10px", paddingBottom: "20px", width: "284px" }}>
                                 <Todolist todolist={tl} tasks={allTodolistTasks} />
                             </Paper>
                         </Grid>
