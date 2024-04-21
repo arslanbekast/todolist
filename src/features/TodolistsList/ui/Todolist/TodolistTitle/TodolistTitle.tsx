@@ -10,24 +10,24 @@ type Props = {
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
-    const { id, title, entityStatus } = todolist
+    const { id, title } = todolist
 
-    const { removeTodolist, changeTodolistTitle } = useActions(todolistsThunks)
-
-    const removeTodolistHandler = () => {
-        removeTodolist(id)
-    }
-
+    const { changeTodolistTitle } = useActions(todolistsThunks)
     const changeTodolistTitleHandler = (title: string) => {
         changeTodolistTitle({ id, title })
     }
 
     return (
-        <h3 style={{ marginTop: "0" }}>
+        <h3
+            style={{
+                display: "inline-block",
+                marginTop: "0",
+                maxWidth: "250px",
+                overflow: "hidden",
+                wordBreak: "break-all",
+            }}
+        >
             <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
-            <IconButton onClick={removeTodolistHandler} disabled={entityStatus === "loading"} size={"small"}>
-                <Delete fontSize={"small"} />
-            </IconButton>
         </h3>
     )
 }
