@@ -34,7 +34,16 @@ export const Todolist = React.memo(function ({ todolist, tasks }: Props) {
     }
 
     return (
-        <Paper style={{ position: "relative", padding: "10px", paddingBottom: "20px", width: "280px" }}>
+        <Paper
+            elevation={24}
+            style={{
+                position: "relative",
+                padding: "10px",
+                paddingBottom: "20px",
+                width: "270px",
+                minHeight: "290px",
+            }}
+        >
             <IconButton
                 onClick={removeTodolistHandler}
                 disabled={entityStatus === "loading"}
