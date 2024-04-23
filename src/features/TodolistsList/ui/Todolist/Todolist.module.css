@@ -1,0 +1,14 @@
+.todolist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    padding: 20px;
+    width: 270px;
+    min-height: 340px;
+}
+.todolistDeleteBtn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
