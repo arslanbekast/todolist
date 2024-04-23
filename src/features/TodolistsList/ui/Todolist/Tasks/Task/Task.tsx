@@ -31,15 +31,17 @@ export const Task = memo(({ task, todolistId }: Props) => {
     }
 
     return (
-        <div key={task.id} className={task.status === TaskStatuses.Completed ? s.isDone : ""}>
-            <Checkbox
-                checked={task.status === TaskStatuses.Completed}
-                color="primary"
-                onChange={changeTaskStatusHandler}
-                size={"small"}
-            />
+        <div key={task.id} className={s.task + " " + `${task.status === TaskStatuses.Completed ? s.isDone : ""}`}>
+            <div>
+                <Checkbox
+                    checked={task.status === TaskStatuses.Completed}
+                    color="primary"
+                    onChange={changeTaskStatusHandler}
+                    size={"small"}
+                />
 
-            <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
+                <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
+            </div>
             <IconButton onClick={removeTaskHandler} size={"small"} aria-label="delete">
                 <Delete fontSize="small" />
             </IconButton>
