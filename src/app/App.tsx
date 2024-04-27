@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { BrowserRouter } from "react-router-dom"
+import { HashRouter } from "react-router-dom"
 import { CircularProgress } from "@mui/material"
 import { ErrorSnackbar } from "common/components"
 import { useActions } from "common/hooks"
@@ -27,13 +27,13 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className="App">
                 <ErrorSnackbar />
                 <Header />
                 <Routing />
             </div>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 
