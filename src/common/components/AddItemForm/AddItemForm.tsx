@@ -1,7 +1,8 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react"
-import { IconButton, TextField } from "@mui/material"
+import { Button, IconButton, TextField } from "@mui/material"
 import { AddBox } from "@mui/icons-material"
 import { BaseResponseType } from "common/types"
+import s from "./AddItemForm.module.css"
 
 type Props = {
     addItem: (title: string) => Promise<any>
@@ -16,11 +17,9 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: P
         if (title.trim() !== "") {
             addItem(title)
                 .then((res: any) => {
-                    debugger
                     setTitle("")
                 })
                 .catch((err: BaseResponseType) => {
-                    debugger
                     if (err?.resultCode) {
                         setError(err.messages[0])
                     }
@@ -44,7 +43,7 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: P
     }
 
     return (
-        <div>
+        <div className={s.wrapper}>
             <TextField
                 variant="outlined"
                 disabled={disabled}
@@ -56,9 +55,18 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: P
                 helperText={error}
                 size={"small"}
             />
-            <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
-                <AddBox />
-            </IconButton>
+            <Button
+                onClick={addItemHandler}
+                disabled={disabled}
+                className={s.button}
+                variant={"contained"}
+                style={{ minWidth: "40px", minHeight: "40px" }}
+            >
+                +
+            </Button>
+            {/*<IconButton color="primary" onClick={addItemHandler} disabled={disabled}>*/}
+            {/*    <AddBox />*/}
+            {/*</IconButton>*/}
         </div>
     )
 })
