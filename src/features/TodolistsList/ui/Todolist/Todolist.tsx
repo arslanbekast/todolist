@@ -9,6 +9,7 @@ import { TodolistTitle } from "../Todolist/TodolistTitle/TodolistTitle"
 import { FilterTasksButtons } from "../Todolist/FilterTasksButtons/FilterTasksButtons"
 import { Delete } from "@mui/icons-material"
 import { IconButton, Paper } from "@mui/material"
+import s from "./Todolist.module.css"
 
 type Props = {
     todolist: TodolistDomainType
@@ -34,30 +35,26 @@ export const Todolist = React.memo(function ({ todolist, tasks }: Props) {
     }
 
     return (
-        <Paper
-            elevation={24}
-            style={{
-                position: "relative",
-                padding: "10px",
-                paddingBottom: "20px",
-                width: "270px",
-                minHeight: "290px",
-            }}
-        >
-            <IconButton
-                onClick={removeTodolistHandler}
-                disabled={entityStatus === "loading"}
-                size={"small"}
-                title={"Delete todolist"}
-                style={{ position: "absolute", right: "5px", top: "5px" }}
-            >
-                <Delete fontSize={"small"} />
-            </IconButton>
-            <TodolistTitle todolist={todolist} />
-            <AddItemForm addItem={addTaskCb} disabled={todolist.entityStatus === "loading"} />
-            <Tasks tasks={tasks} todolist={todolist} />
-            {!tasks.length && <div style={{ paddingTop: "10px", color: "grey" }}>No task</div>}
-            {tasks.length > 0 && <FilterTasksButtons todolist={todolist} />}
+        <Paper elevation={6}>
+            <div className={s.todolist}>
+                <IconButton
+                    onClick={removeTodolistHandler}
+                    disabled={entityStatus === "loading"}
+                    size={"small"}
+                    title={"Delete todolist"}
+                    className={s.todolistDeleteBtn}
+                    style={{ position: "absolute" }}
+                >
+                    <Delete fontSize={"small"} />
+                </IconButton>
+                <div>
+                    <TodolistTitle todolist={todolist} />
+                    <AddItemForm addItem={addTaskCb} disabled={todolist.entityStatus === "loading"} />
+                </div>
+                <Tasks tasks={tasks} todolist={todolist} />
+
+                <FilterTasksButtons todolist={todolist} />
+            </div>
         </Paper>
     )
 })
