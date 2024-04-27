@@ -4,6 +4,7 @@
     flex-direction: column;
 }
 .noTask {
-    padding-top: 10px;
     color: grey;
+    align-self: center;
+    justify-self: center;
 }

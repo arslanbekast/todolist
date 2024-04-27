@@ -3,6 +3,7 @@ import React from "react"
 import { TaskStatuses } from "common/enums"
 import { TaskType } from "features/TodolistsList/api/tasks/tasksApi.types"
 import { TodolistDomainType } from "features/TodolistsList/model/todolists/todolistsSlice"
+import s from "./Tasks.module.css"
 
 type Props = {
     tasks: TaskType[]
@@ -22,10 +23,15 @@ export const Tasks = ({ tasks, todolist }: Props) => {
     }
 
     return (
-        <div>
-            {tasksForTodolist.map((t) => (
-                <Task key={t.id} task={t} todolistId={id} />
-            ))}
-        </div>
+        <>
+            {!!tasksForTodolist.length && (
+                <div className={s.tasks}>
+                    {tasksForTodolist.map((t) => (
+                        <Task key={t.id} task={t} todolistId={id} />
+                    ))}
+                </div>
+            )}
+            {!tasksForTodolist.length && <div className={s.noTask}>No task</div>}
+        </>
     )
 }
